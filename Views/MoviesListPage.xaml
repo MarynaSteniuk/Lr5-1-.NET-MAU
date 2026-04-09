@@ -7,15 +7,19 @@
              x:DataType="vm:MovieListViewModel"
              Title="Movies"
              BindingContext="{x:Static local:App.MainViewModel}">
-    <ListView ItemsSource="{Binding Movies}" Margin="10" ItemTapped="ListView_ItemTapped">
-        <ListView.ItemTemplate>
-            <DataTemplate>
-                <TextCell Text="{Binding Title}" x:DataType="vm:MovieViewModel">
-                    <TextCell.ContextActions>
-                        <MenuItem Text="Delete" IsDestructive="True" Clicked="MenuItem_Clicked" />
-                    </TextCell.ContextActions>
-                </TextCell>
+
+    <CollectionView ItemsSource="{Binding Movies}"
+                    SelectedItem="{Binding SelectedMovie, Mode=OneWayToSource}"
+                    SelectionMode="Single"
+                    SelectionChanged="CollectionView_SelectionChanged"
+                    Margin="10">
+        <CollectionView.ItemTemplate>
+            <DataTemplate x:DataType="vm:MovieViewModel">
+                <Grid Padding="10">
+                    <Label Text="{Binding Title}" FontSize="18" VerticalOptions="Center" />
+                </Grid>
             </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+
 </ContentPage>

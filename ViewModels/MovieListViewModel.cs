@@ -3,21 +3,27 @@ using System.Collections.ObjectModel;
 
 namespace MovieCatalog.ViewModels;
 
-public class MovieListViewModel: ObservableObject
+public class MovieListViewModel : ObservableObject
 {
-    public ObservableCollection<MovieViewModel> Movies { get; set; }
+    public ObservableCollection<MovieViewModel> Movies { get; set; } = [];
 
-    public MovieListViewModel() =>
-        Movies = [];
+    private MovieViewModel _selectedMovie;
+    public MovieViewModel SelectedMovie
+    {
+        get => _selectedMovie;
+        set => SetProperty(ref _selectedMovie, value);
+    }
+
+    public MovieListViewModel() { }
 
     public async Task RefreshMovies()
     {
         IEnumerable<Models.Movie> moviesData = await Models.MoviesDatabase.GetMovies();
 
+        Movies.Clear(); 
         foreach (Models.Movie movie in moviesData)
             Movies.Add(new MovieViewModel(movie));
     }
 
-    public void DeleteMovie(MovieViewModel movie) =>
-        Movies.Remove(movie);
+    public void DeleteMovie(MovieViewModel movie) => Movies.Remove(movie);
 }
